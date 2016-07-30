@@ -1,0 +1,29 @@
+{
+  "name": "drfbot",
+  "version": "0.0.1",
+  "description": "DRF Slack Bot",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nf start",
+    "test": "standard",
+    "flow": "flow; test $? -eq 0 -o $? -eq 2"
+  },
+  "repository": "yasyf/drfbot",
+  "keywords": [
+    "slack-bot",
+    "dorm-room-fund"
+  ],
+  "author": "Yasyf Mohamedali<ym@drf.vc>",
+  "bugs": {
+    "url": "https://github.com/yasyf/drfbot/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "6.3.1"
+  },
+  "devDependencies": {
+    "flow-bin": "0.30.0",
+    "foreman": "1.4.1",
+    "standard": "7.1.2"
+  }
+}
