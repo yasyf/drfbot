@@ -6,7 +6,7 @@ import BaseInteraction from './base';
 
 export default class LadiesAndGentsInteraction extends BaseInteraction {
   patterns = [/(.*)ladies and gent(?:s|lemen)\s?[,:-]?(.*)/];
-  messageTypes = ['direct_message'];
+  messageTypes = ['ambient'];
 
   hook(bot: SlackBot, message: Message) {
     const announcement = `${message.match[1]}${message.match[2]}`.trim();
