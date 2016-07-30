@@ -1,1 +1,1 @@
-web: ./node_modules/.bin/babel-node ./src
+worker: ./node_modules/.bin/babel-node ./src
