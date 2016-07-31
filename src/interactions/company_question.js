@@ -19,13 +19,14 @@ export default class CompanyQuestionInteraction extends BaseInteraction {
 
   hook(bot: SlackBot, message: Message) {
     const handleCompanies = companies => {
-      if (!companies.length) {
+      if (!companies.size) {
         return;
       }
+      const company = companies.first();
       bot.reply(message, {
         text: `<@${message.user}>: were you talking about this company?`,
         attachments: CompanyQuestionInteraction.textAttachment(
-          `<${companies[0].trello_url}|${companies[0].name}>`,
+          `<${company.trello_url}|${company.name}>`,
         ),
       });
     };

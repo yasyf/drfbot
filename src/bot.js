@@ -1,22 +1,33 @@
 /* @flow */
 
-import type { Controller, Interaction } from './types';
-
+import * as Immutable from 'immutable';
+import type { Controller, Interaction, Logger } from './types';
 import Botkit from 'botkit';
 import config from './config';
+import redisStorage from 'botkit-storage-redis';
 
 export default class Bot {
   controller: Controller;
+  logger: Logger;
   interations: Array<Interaction>;
 
   constructor(options?: Object) {
-    this.controller = Botkit.slackbot(options);
+    this.controller = Botkit.slackbot({
+      debug: config.getBool('DEBUG'),
+      storage: redisStorage(config.get('REDIS_URL')),
+      ...options,
+    });
+    this.logger = this.controller.log;
     this.interations = [];
   }
 
-  addInteractions(interactions: Array<Interaction>) {
-    interactions.forEach(this.hookInteraction.bind(this));
-    this.interations.push(...interactions);
+  addInteractions(interactions: Array<Interaction>): Promise<mixed> {
+    const hookPromises = interactions.map(interaction =>
+      this.hookInteraction(interaction).then(_ =>
+        this.interations.push(interaction)
+      )
+    );
+    return Promise.all(hookPromises);
   }
 
   start(token?: string) {
@@ -25,11 +36,13 @@ export default class Bot {
     }).startRTM();
   }
 
-  hookInteraction(interaction: Interaction) {
-    this.controller.hears(
-      interaction.patterns,
-      interaction.messageTypes,
-      interaction.hook,
+  hookInteraction(interaction: Interaction): Promise<mixed> {
+    return Promise.resolve(interaction.patterns).then(patterns =>
+      this.controller.hears(
+        patterns instanceof Immutable.List ? patterns.toArray() : patterns,
+        interaction.messageTypes,
+        interaction.hook,
+      )
     );
   }
 }

@@ -9,11 +9,13 @@ The entire bot is based around the notion of Interactions. Define new ones in [`
 ```javascript
 type MessageType = 'direct_message' | 'ambient' | 'direct_mention' | 'mention';
 type MessageTypes = 'message_received' | Array<MessageType>;
-type Patterns = Array<string>;
+type Pattern = string | RegExp;
+type Patterns = Array<Pattern> | Immutable.List<Pattern>;
+type AsyncPatterns = Patterns | Promise<Patterns>;
 type Hook = (bot: SlackBot, message: Message) => void;
 
 interface Interaction {
-  patterns: Patterns;
+  patterns: AsyncPatterns;
   messageTypes: MessageTypes;
   hook: Hook;
 }

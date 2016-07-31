@@ -1,11 +1,23 @@
 /* @flow */
 
+
+import type { Company, Pattern } from './types';
+
+import Cache from './cache';
 import config from './config';
 import request from 'request';
+const Immutable = require('immutable');
+
+const COMPANIES_KEY = 'companies';
 
 class API {
-  static domain = 'vote.drf.vc';
+  static domain = config.get('API_DOMAIN', 'vote.drf.vc');
   static apiVersion = 1;
+  cache: Cache<Array<Company>>;
+
+  constructor() {
+    this.cache = new Cache();
+  }
 
   static path(method: string): string {
     return `http://${this.domain}/api/v${this.apiVersion}/${method}/`;
@@ -56,10 +68,32 @@ class API {
     }).then((_body) => undefined);
   }
 
-  searchCompanies(query: string): Promise<Array<Object>> {
+  getCompanies(): Promise<Immutable.List<Company>> {
+    return this.cache.getOrGenerate(COMPANIES_KEY, () =>
+      this.get('companies').then(result => result.companies)
+    ).then(Immutable.List);
+  }
+
+  getCompanyPatterns(): Promise<Immutable.List<Pattern>> {
+    return this.getCompanies().then(companies =>
+      companies.map(company => company.name)
+    );
+  }
+
+  getCompany(name: string): Promise<Company> {
+    return this.getCompanies().then(companies => {
+      const company = companies.find(comp => comp.name === name);
+      if (!company) {
+        throw new Error(`${name} not found!`);
+      }
+      return company;
+    });
+  }
+
+  searchCompanies(query: string): Promise<Immutable.List<Company>> {
     return this.get('companies/search', {
       q: query,
-    }).then(body => body.results);
+    }).then(body => Immutable.List(body.results));
   }
 }
 

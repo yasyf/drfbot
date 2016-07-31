@@ -21,6 +21,7 @@ module.exports = {
         "argsIgnorePattern": "^_",
       },
     ],
+    "new-cap": "off",
     "flowtype/define-flow-type": "error",
     "flowtype/require-valid-file-annotation": [
       "error",

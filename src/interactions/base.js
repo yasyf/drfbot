@@ -1,11 +1,17 @@
 /* eslint global-require: "off" */
 /* @flow */
 
-import type { Attachments, Interaction, MessageTypes } from '../types';
+import type {
+  AsyncPatterns,
+  Attachments,
+  Interaction,
+  MessageTypes,
+} from '../types';
 
 import fs from 'fs';
 
 export default class BaseInteraction {
+  patterns: AsyncPatterns;
   messageTypes: MessageTypes = 'message_received';
 
   static loadAll(): Array<Interaction> {

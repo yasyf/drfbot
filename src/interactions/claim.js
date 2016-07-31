@@ -23,12 +23,12 @@ export default class ClaimInteraction extends BaseInteraction {
       bot.reply(message, reply);
     };
     const handleCompanies = companies => {
-      if (companies.length === 0) {
+      if (companies.size === 0) {
         const reply = `<@${message.user}>: ${searchTerm} was not found!`;
         bot.reply(message, reply);
         return;
       }
-      api.allocateCompany(companies[0].id, message.user)
+      api.allocateCompany(companies.first().id, message.user)
         .then(() => handleAllocate(true))
         .catch(() => handleAllocate(false));
     };

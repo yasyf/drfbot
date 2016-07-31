@@ -13,14 +13,15 @@ export default class CompanyInteraction extends BaseInteraction {
   hook(bot: SlackBot, message: Message) {
     const searchTerm = message.match[1];
     const handleCompanies = companies => {
-      if (companies.length === 0) {
+      if (companies.size === 0) {
         const reply = `<@${message.user}>: ${searchTerm} was not found!`;
         bot.reply(message, reply);
       } else {
+        const company = companies.first();
         bot.reply(message, {
           text: `<@${message.user}>`,
           attachments: CompanyInteraction.textAttachment(
-            `<${companies[0].trello_url}|${companies[0].name}>`,
+            `<${company.trello_url}|${company.name}>`,
           ),
         });
       }
