@@ -8,7 +8,9 @@ import api from '../api';
 
 export default class CompanyQuestionInteraction extends BaseInteraction {
   patterns = [
-    /^(?:what|who) (?:is|was) (.*)\?$/i,
+    /point(?: partner)? (?:for|of) (.*)(?:\?)/i,
+    /point(?: partner)? (?:for|of) (.*)/i,
+    /(?:what|who|which) (?:is|was) (.*)\?/i,
     / (\w*)\?/,
     /^(.*)\?/,
     /^(\w*)\?$/,
