@@ -5,7 +5,7 @@ import type { Message, SlackBot } from '../types';
 import BaseInteraction from './base';
 
 export default class LadiesAndGentsInteraction extends BaseInteraction {
-  patterns = [/(.*)ladies and gent(?:s|lemen)\s?[,:-]?(.*)/];
+  patterns = [/(.*)ladies and gent(?:s|lemen)\s?[,:-]?(.*)/i];
   messageTypes = ['ambient'];
 
   hook(bot: SlackBot, message: Message) {

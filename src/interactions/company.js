@@ -7,22 +7,20 @@ import BaseInteraction from './base';
 import api from '../api';
 
 export default class CompanyInteraction extends BaseInteraction {
-  patterns = [/^company (.*)$/];
+  patterns = [/^company (.*)$/i];
   messageTypes = ['direct_message', 'direct_mention'];
 
   hook(bot: SlackBot, message: Message) {
     const searchTerm = message.match[1];
     const handleCompanies = companies => {
-      let reply;
       if (companies.length === 0) {
-        reply = `<@${message.user}>: ${searchTerm} was not found!`;
+        const reply = `<@${message.user}>: ${searchTerm} was not found!`;
         bot.reply(message, reply);
       } else {
-        const company = companies[0];
         bot.reply(message, {
           text: `<@${message.user}>`,
           attachments: CompanyInteraction.textAttachment(
-            `<${company.trello_url}|${company.name}>`,
+            `<${companies[0].trello_url}|${companies[0].name}>`,
           ),
         });
       }

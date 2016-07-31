@@ -7,7 +7,7 @@ import BaseInteraction from './base';
 import api from '../api';
 
 export default class ClaimInteraction extends BaseInteraction {
-  patterns = [/^claim (.*)$/];
+  patterns = [/^claim (.*)$/i];
   messageTypes = ['direct_message', 'direct_mention'];
 
   hook(bot: SlackBot, message: Message) {
