@@ -16,11 +16,16 @@ export default class CompanyInteraction extends BaseInteraction {
       let reply;
       if (companies.length === 0) {
         reply = `<@${message.user}>: ${searchTerm} was not found!`;
+        bot.reply(message, reply);
       } else {
         const company = companies[0];
-        reply = `<@${message.user}>: <${company.trello_url}|${company.name}>`;
+        bot.reply(message, {
+          text: `<@${message.user}>`,
+          attachments: CompanyInteraction.textAttachment(
+            `<${company.trello_url}|${company.name}>`,
+          ),
+        });
       }
-      bot.reply(message, reply);
     };
     api.searchCompanies(searchTerm).then(handleCompanies);
   }

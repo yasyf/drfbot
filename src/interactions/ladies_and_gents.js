@@ -10,8 +10,11 @@ export default class LadiesAndGentsInteraction extends BaseInteraction {
 
   hook(bot: SlackBot, message: Message) {
     const announcement = `${message.match[1]}${message.match[2]}`.trim();
-    const channelAnnouncement =
-      `<!channel>: <@${message.user}> would like you to know ${announcement}`;
-    bot.reply(message, channelAnnouncement);
+    bot.reply(message, {
+      text: `<!channel>: <@${message.user}> would like you to know this!`,
+      attachments: LadiesAndGentsInteraction.textAttachment(
+        announcement,
+      ),
+    });
   }
 }
