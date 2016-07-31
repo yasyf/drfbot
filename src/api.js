@@ -26,10 +26,10 @@ class API {
     };
     return new Promise((resolve, reject) => {
       const callback = (error, response, body) => {
-        if (error) {
-          reject(error);
+        if (error || response.statusCode !== 200) {
+          reject(error || response.statusCode);
         } else {
-          resolve(JSON.parse(body));
+          resolve(body ? JSON.parse(body) : {});
         }
       };
       request(allOptions, callback);
@@ -50,10 +50,10 @@ class API {
     return this._authenticatedRequest('POST', path, options);
   }
 
-  allocateCompany(companyID: number, userID: string) {
-    this.post(`companies/${companyID}/allocate`, {
+  allocateCompany(companyID: number, userID: string): Promise<void> {
+    return this.post(`companies/${companyID}/allocate`, {
       user_trello_id: userID,
-    });
+    }).then((_body) => undefined);
   }
 
   searchCompanies(query: string): Promise<Array<Object>> {
