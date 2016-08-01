@@ -43,6 +43,9 @@ export default class BaseInteraction {
     } else if (company.funded) {
       color = 'good';
       status = 'Funded';
+    }
+
+    if (company.pitched && company.past_deadline) {
       const { stats } = company;
       const { averages } = stats;
       fields = [
@@ -54,11 +57,13 @@ export default class BaseInteraction {
         { title: 'Market', value: averages.market.toFixed(2), short: true },
       ];
     }
+
     let partners = 'No partners assigned';
     if (company.partners.length) {
       const users = company.partners.map(partner => `<@${partner.slack_id}>`);
       partners = `Partners: ${users.join(', ')}`;
     }
+
     const attachment = {
       fallback: `${company.name} (${company.trello_url})`,
       color,
