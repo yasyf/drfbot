@@ -26,3 +26,11 @@ interface Interaction {
 ### [LadiesAndGentsInteraction](./src/interactions/ladies_and_gents.js)
 
 @channel's everyone echoing whatever was said that contains the phrase "ladies and gentlemen".
+
+### [ClaimInteraction](./src/interactions/claim.js)
+
+Allows a partner to claim a currently-unassigned company which has applied on the site and is waiting in Trello.
+
+### [CompanyMentionInteraction](./src/interactions/company_mention.js)
+
+Responds with a link to the Trello card for any company that's mentioned.

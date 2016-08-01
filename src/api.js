@@ -10,7 +10,7 @@ const Immutable = require('immutable');
 
 const COMPANIES_KEY = 'companies';
 
-class API {
+export class API {
   static domain = config.get('API_DOMAIN', 'vote.drf.vc');
   static apiVersion = 1;
   cache: Cache<Array<Company>>;
@@ -19,8 +19,12 @@ class API {
     this.cache = new Cache();
   }
 
+  static url(path: string): string {
+    return `http://${this.domain}/${path}`;
+  }
+
   static path(method: string): string {
-    return `http://${this.domain}/api/v${this.apiVersion}/${method}/`;
+    return this.url(`api/v${this.apiVersion}/${method}/`);
   }
 
   _authenticatedRequest(

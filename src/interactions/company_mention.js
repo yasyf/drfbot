@@ -13,9 +13,7 @@ export default class CompanyMentionInteraction extends BaseInteraction {
   hook(bot: SlackBot, message: Message) {
     const handleCompany = company => {
       bot.reply(message, {
-        attachments: CompanyMentionInteraction.textAttachment(
-          `<${company.trello_url}|${company.name}>`,
-        ),
+        attachments: CompanyMentionInteraction.companyAttachment(company),
       });
     };
     api.getCompany(message.match[0]).then(handleCompany);

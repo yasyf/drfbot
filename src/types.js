@@ -65,9 +65,29 @@ export interface Interaction {
   hook: Hook;
 }
 
+type Partner = {
+  name: string,
+  slack_id: string,
+}
 export type Company = {
+  funded: boolean,
   id: number,
   name: string,
+  partners: Array<Partner>,
+  past_deadline: boolean,
+  pitch_on: ?number,
+  pitched: boolean,
+  stats: {
+    yes_votes: number,
+    no_votes: number,
+    required_votes: number,
+    averages: {
+      fit: number,
+      team: number,
+      product: number,
+      market: number,
+    },
+  },
   trello_id: string,
   trello_url: string,
 };
