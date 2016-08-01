@@ -37,12 +37,21 @@ export default class Bot {
   }
 
   hookInteraction(interaction: Interaction): Promise<mixed> {
-    return Promise.resolve(interaction.patterns).then(patterns =>
-      this.controller.hears(
+    return Promise.resolve(interaction.patterns).then(patterns => {
+      let hook = interaction.hook;
+      if (interaction.messageTypes.includes('ambient')) {
+        hook = (bot, message) => {
+          if (message.bot_id) {
+            return;
+          }
+          interaction.hook(bot, message);
+        };
+      }
+      return this.controller.hears(
         patterns instanceof Immutable.List ? patterns.toArray() : patterns,
         interaction.messageTypes,
-        interaction.hook,
-      )
-    );
+        hook,
+      );
+    });
   }
 }

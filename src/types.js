@@ -3,6 +3,7 @@
 import * as Immutable from 'immutable';
 
 export type Message = {
+  bot_id?: string,
   channel: string,
   event: string,
   match: Array<string>,
