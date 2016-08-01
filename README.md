@@ -27,10 +27,28 @@ interface Interaction {
 
 @channel's everyone echoing whatever was said that contains the phrase "ladies and gentlemen".
 
+Example: `Ladies and gents, I have an announcement!`
+
 ### [ClaimInteraction](./src/interactions/claim.js)
 
 Allows a partner to claim a currently-unassigned company which has applied on the site and is waiting in Trello.
 
+Example: `@drfbot claim TheNextGoogle`
+
 ### [CompanyMentionInteraction](./src/interactions/company_mention.js)
 
-Responds with a link to the Trello card for any company that's mentioned.
+Broadcasts with a custom overview for any company that's mentioned.
+
+Example: `I'm super excited about Xperii!`
+
+### [CompanyQuestionInteraction](./src/interactions/company_question.js)
+
+Responds with a custom overview for any company that someone asks a question about.
+
+Example: `Who is the point partner for BrainSpec?`
+
+### [CompanyInteraction](./src/interactions/company_question.js)
+
+Responds with a custom overview and Trello bot prompt for any company that is included in the query.
+
+Example: `@drfbot company Spyce`
