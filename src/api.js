@@ -81,8 +81,9 @@ class API {
   }
 
   getCompany(name: string): Promise<Company> {
+    const keyName = name.toLowerCase();
     return this.getCompanies().then(companies => {
-      const company = companies.find(comp => comp.name === name);
+      const company = companies.find(co => co.name.toLowerCase() === keyName);
       if (!company) {
         throw new Error(`${name} not found!`);
       }
@@ -91,9 +92,13 @@ class API {
   }
 
   searchCompanies(query: string): Promise<Immutable.List<Company>> {
-    return this.get('companies/search', {
-      q: query,
-    }).then(body => Immutable.List(body.results));
+    return this.getCompany(query)
+      .then(Immutable.List.of)
+      .catch(_ =>
+        this.get('companies/search', {
+          q: query,
+        }).then(body => Immutable.List(body.results))
+      );
   }
 }
 
