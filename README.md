@@ -41,9 +41,9 @@ Broadcasts with a custom overview for any company that's mentioned.
 
 Example: `I'm super excited about Xperii!`
 
-### [CompanyQuestionInteraction](./src/interactions/company_question.js)
+### [PointPartnerQuestionInteraction](./src/interactions/point_partner_question.js)
 
-Responds with a custom overview for any company that someone asks a question about.
+Responds with an answer for any company whose point partners someone asks a question about.
 
 Example: `Who is the point partner for BrainSpec?`
 
