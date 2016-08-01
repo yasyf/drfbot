@@ -24,8 +24,7 @@ export default class CompanyQuestionInteraction extends BaseInteraction {
       }
       const company = companies.first();
       bot.reply(message, {
-        text: `<@${message.user}>: were you talking about this company?`
-          + `\n${company.trello_url}`,
+        text: `<@${message.user}>: were you talking about this company?`,
         attachments: CompanyQuestionInteraction.companyAttachment(company),
       });
     };
