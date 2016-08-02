@@ -7,10 +7,7 @@ import BaseInteraction from './base';
 import api from '../api';
 
 export default class PointPartnerQuestionInteraction extends BaseInteraction {
-  patterns = [
-    /point(?: partner)? (?:for|of) (.*)(?:\?)/i,
-    /point(?: partner)? (?:for|of) (.*)/i,
-  ];
+  intents = ['point_partner'];
   messageTypes = ['ambient'];
 
   hook(bot: SlackBot, message: Message) {
@@ -27,6 +24,6 @@ export default class PointPartnerQuestionInteraction extends BaseInteraction {
         + ` are the listed partners for ${company.name}`;
       bot.reply(message, response);
     };
-    api.searchCompanies(message.match[1]).then(handleCompanies);
+    api.searchCompanies(message.entities.company).then(handleCompanies);
   }
 }

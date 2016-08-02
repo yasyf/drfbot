@@ -9,6 +9,12 @@ module.exports = {
     "import/no-unresolved": "off",
     "sort-imports": "warn",
     "no-trailing-spaces": "warn",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false,
+      },
+    ],
     "no-underscore-dangle": [
       "error",
       {

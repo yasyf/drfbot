@@ -2,6 +2,11 @@
 
 import * as Immutable from 'immutable';
 
+export type Entity = {
+  confidence: number,
+  value: string,
+};
+export type Intent = 'none' | 'point_partner';
 export type Message = {
   bot_id?: string,
   channel: string,
@@ -11,6 +16,8 @@ export type Message = {
   text: string,
   ts: string,
   user: string,
+  entities: { intent: Intent } & { [name: string]: string },
+  intent: Intent,
 };
 export type Attachments = Array<Object>;
 type Response = {
@@ -55,15 +62,16 @@ export type Hook = (bot: SlackBot, message: Message) => void;
 
 export type Controller = {
   log: Logger,
-  hears: (patterns: Patterns, messageTypes: MessageTypes, hook: Hook) => mixed,
+  hears: any,
   spawn: (options: {token: string}) => any,
   storage: Storage,
 };
 
 export interface Interaction {
-  patterns: AsyncPatterns;
-  messageTypes: MessageTypes;
   hook: Hook;
+  messageTypes: MessageTypes;
+  patterns?: AsyncPatterns;
+  intents?: Array<Intent>;
 }
 
 type Partner = {

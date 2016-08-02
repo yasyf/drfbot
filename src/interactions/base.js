@@ -5,6 +5,7 @@ import type {
   AsyncPatterns,
   Attachments,
   Company,
+  Intent,
   Interaction,
   MessageTypes,
 } from '../types';
@@ -13,7 +14,8 @@ import { API } from '../api';
 import fs from 'fs';
 
 export default class BaseInteraction {
-  patterns: AsyncPatterns;
+  intents: ?Array<Intent>;
+  patterns: ?AsyncPatterns;
   messageTypes: MessageTypes = 'message_received';
 
   static loadAll(): Array<Interaction> {

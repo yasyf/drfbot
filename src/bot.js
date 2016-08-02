@@ -4,6 +4,7 @@ import * as Immutable from 'immutable';
 import type { Controller, Interaction, Logger } from './types';
 import Botkit from 'botkit';
 import config from './config';
+import middleware from './middleware';
 import redisStorage from 'botkit-storage-redis';
 
 export default class Bot {
@@ -17,6 +18,7 @@ export default class Bot {
       storage: redisStorage(config.get('REDIS_URL')),
       ...options,
     });
+    this.controller.middleware.receive.use(middleware.receive);
     this.logger = this.controller.log;
     this.interations = [];
   }
@@ -46,6 +48,14 @@ export default class Bot {
           }
           interaction.hook(bot, message);
         };
+      }
+      if (interaction.intents) {
+        return this.controller.hears(
+          interaction.intents,
+          interaction.messageTypes,
+          middleware.hears,
+          hook,
+        );
       }
       return this.controller.hears(
         patterns instanceof Immutable.List ? patterns.toArray() : patterns,
