@@ -1,12 +1,13 @@
 /* @flow */
 
 
+import * as Immutable from 'immutable';
+
 import type { Company, Pattern } from './types';
 
 import Cache from './cache';
 import config from './config';
-import request from 'request';
-const Immutable = require('immutable');
+import fetch from './fetch';
 
 const COMPANIES_KEY = 'companies';
 
@@ -37,19 +38,9 @@ export class API {
         bearer: config.get('API_TOKEN'),
       },
       method,
-      url: API.path(path),
       ...options,
     };
-    return new Promise((resolve, reject) => {
-      const callback = (error, response, body) => {
-        if (error || response.statusCode !== 200) {
-          reject(error || response.statusCode);
-        } else {
-          resolve(body ? JSON.parse(body) : {});
-        }
-      };
-      request(allOptions, callback);
-    });
+    return fetch(API.path(path), allOptions);
   }
 
   get(path: string, qs?: Object): Promise<Object> {

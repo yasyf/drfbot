@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { Company, Message, SlackBot } from '../types';
+import type { Company, Message, Response, SlackBot } from '../types';
 
 import BaseInteraction from './base';
 
@@ -10,7 +10,10 @@ export default class CompanyIntentInteraction extends BaseInteraction {
   abstract = true;
   messageTypes = ['ambient'];
 
-  responseFromCompany(_company: Company, _message: Message): ?string {
+  responseFromCompany(
+    _company: Company,
+    _message: Message
+  ): ?string | ?Response {
     return null;
   }
 

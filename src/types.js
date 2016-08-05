@@ -6,7 +6,7 @@ export type Entity = {
   confidence: number,
   value: string,
 };
-export type Intent = 'none' | 'point_partner' | 'snapshot';
+export type Intent = 'none' | 'point_partner' | 'snapshot' | 'send_love';
 export type Message = {
   bot_id?: string,
   channel: string,
@@ -20,7 +20,7 @@ export type Message = {
   intent: Intent,
 };
 export type Attachments = Array<Object>;
-type Response = {
+export type Response = {
   attachments?: Attachments,
   text?: string,
 };

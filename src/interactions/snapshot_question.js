@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { Company, Message } from '../types';
+import type { Company, Message, Response } from '../types';
 
 import CompanyIntentInteraction from './company_intent';
 
@@ -9,7 +9,7 @@ export default class SnapshotQuestionInteraction
   abstract = false;
   intents = ['snapshot'];
 
-  responseFromCompany(company: Company, message: Message): ?string {
+  responseFromCompany(company: Company, message: Message): ?Response {
     const snapshotLink = company.snapshot_link;
     if (!snapshotLink) {
       return null;

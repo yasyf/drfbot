@@ -51,10 +51,16 @@ Example: `Who is the point partner for BrainSpec?`
 
 Responds with an answer for any company whose snapshot someone asks a question about.
 
-Example: `Who is the point partner for BrainSpec?`
+Example: `Where's the snapshot for BrainSpec?`
 
 ### [CompanyInteraction](./src/interactions/company_question.js)
 
 Responds with a custom overview and Trello bot prompt for any company that is included in the query.
 
 Example: `@drfbot company Spyce`
+
+### [SendLoveInteraction](./src/interactions/send_love.js)
+
+Send some love to another partner!
+
+Example: `Send some love to @yasyf!`
