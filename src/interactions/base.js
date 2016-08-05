@@ -66,10 +66,16 @@ export default class BaseInteraction {
       partners = `Partners: ${users.join(', ')}`;
     }
 
+    const footerItems = [`<${company.trello_url}|Trello>`];
+    if (company.snapshot_link) {
+      footerItems.push(`<${company.snapshot_link}|Snapshot>`);
+    }
+    const footer = footerItems.join(' | ');
+
     const attachment = {
       fallback: `${company.name} (${company.trello_url})`,
       color,
-      footer: `<${company.trello_url}|Trello>`,
+      footer,
       title: company.name,
       title_link: API.url(`companies/${company.id}`),
       text: `${status}. ${partners}.`,

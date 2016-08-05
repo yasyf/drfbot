@@ -86,6 +86,7 @@ export type Company = {
   past_deadline: boolean,
   pitch_on: ?number,
   pitched: boolean,
+  snapshot_link: ?string,
   stats: {
     yes_votes: number,
     no_votes: number,
