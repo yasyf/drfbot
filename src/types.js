@@ -6,7 +6,7 @@ export type Entity = {
   confidence: number,
   value: string,
 };
-export type Intent = 'none' | 'point_partner';
+export type Intent = 'none' | 'point_partner' | 'snapshot';
 export type Message = {
   bot_id?: string,
   channel: string,
@@ -67,11 +67,11 @@ export type Controller = {
   storage: Storage,
 };
 
-export interface Interaction {
+export type Interaction = {
   hook: Hook;
   messageTypes: MessageTypes;
-  patterns?: AsyncPatterns;
-  intents?: Array<Intent>;
+  patterns: AsyncPatterns | void;
+  intents: Array<Intent> | void;
 }
 
 type Partner = {

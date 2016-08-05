@@ -96,13 +96,15 @@ export class API {
   }
 
   searchCompanies(query: string): Promise<Immutable.List<Company>> {
-    return this.getCompany(query)
-      .then(Immutable.List.of)
-      .catch(_ =>
-        this.get('companies/search', {
-          q: query,
-        }).then(body => Immutable.List(body.results))
-      );
+    return this.cache.getOrGenerate(`${COMPANIES_KEY}:${query}`, () =>
+      this.getCompany(query)
+        .then((company) => [company])
+        .catch(_ =>
+          this.get('companies/search', {
+            q: query,
+          }).then(body => body.results)
+        )
+    ).then(Immutable.List);
   }
 }
 

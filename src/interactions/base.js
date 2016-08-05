@@ -6,23 +6,29 @@ import type {
   Attachments,
   Company,
   Intent,
-  Interaction,
+  Message,
   MessageTypes,
+  SlackBot,
 } from '../types';
 
 import { API } from '../api';
 import fs from 'fs';
 
 export default class BaseInteraction {
-  intents: ?Array<Intent>;
-  patterns: ?AsyncPatterns;
+  abstract: boolean = false;
+  intents: Array<Intent> | void;
+  patterns: AsyncPatterns | void;
   messageTypes: MessageTypes = 'message_received';
 
-  static loadAll(): Array<Interaction> {
+  hook(_bot: SlackBot, _message: Message) {
+    throw new Error('Subclass of BaseInteraction must define hook()!');
+  }
+
+  static loadAll(): Array<BaseInteraction> {
     return fs.readdirSync(__dirname).map(file => {
       const InteractionClass = require(`./${file}`).default;
       return new InteractionClass();
-    }).filter(x => x.constructor !== BaseInteraction);
+    }).filter(x => x.constructor !== BaseInteraction && !x.abstract);
   }
 
   static textAttachment(text: string): Attachments {

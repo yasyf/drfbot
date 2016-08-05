@@ -9,6 +9,7 @@ module.exports = {
     "import/no-unresolved": "off",
     "sort-imports": "warn",
     "no-trailing-spaces": "warn",
+    "consistent-return": "error",
     "no-param-reassign": [
       "error",
       {

@@ -9,7 +9,7 @@ const client = new Wit({
   apiVersion: config.get('WIT_API_VERSION'),
 });
 
-const MIN_CONFIDENCE = 0.5;
+const MIN_CONFIDENCE = 0.7;
 
 const Middleware = {
   receive(bot: SlackBot, message: Message, next: () => void) {

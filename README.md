@@ -47,6 +47,12 @@ Responds with an answer for any company whose point partners someone asks a ques
 
 Example: `Who is the point partner for BrainSpec?`
 
+### [SnapshotQuestionInteraction](./src/interactions/snapshot_question.js)
+
+Responds with an answer for any company whose snapshot someone asks a question about.
+
+Example: `Who is the point partner for BrainSpec?`
+
 ### [CompanyInteraction](./src/interactions/company_question.js)
 
 Responds with a custom overview and Trello bot prompt for any company that is included in the query.

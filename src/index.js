@@ -1,10 +1,14 @@
 /* @flow */
 
+import BaseInteraction from './interactions/base';
 import Bot from './bot';
-import Interaction from './interactions/base';
+import type { Interaction } from './types';
+
+const allInteractions: Array<Interaction> =
+  BaseInteraction.loadAll().map(x => (x: Interaction));
 
 const bot = new Bot();
 bot
-  .addInteractions(Interaction.loadAll())
+  .addInteractions(allInteractions)
   .then(_ => bot.start())
   .catch(error => bot.logger.error(error));
