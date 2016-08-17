@@ -59,7 +59,7 @@ export class API {
 
   allocateCompany(companyID: number, userID: string): Promise<void> {
     return this.post(`companies/${companyID}/allocate`, {
-      user_trello_id: userID,
+      user_slack_id: userID,
     }).then((_body) => undefined);
   }
 
