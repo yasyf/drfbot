@@ -63,6 +63,12 @@ export class API {
     }).then((_body) => undefined);
   }
 
+  rejectCompany(companyID: number): Promise<void> {
+    return this
+      .post(`companies/${companyID}/reject`)
+      .then((_body) => undefined);
+  }
+
   getCompanies(): Promise<Immutable.List<Company>> {
     return this.cache.getOrGenerate(COMPANIES_KEY, () =>
       this.get('companies').then(result => result.companies)
