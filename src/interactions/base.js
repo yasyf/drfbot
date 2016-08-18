@@ -57,6 +57,8 @@ export default class BaseInteraction {
       const { stats } = company;
       const { averages } = stats;
       fields = [
+        { title: 'RDV Funded', value: company.rdv_funded ? '✓' : '✗', short: true },
+        { title: 'Raised', value: company.capital_raised, short: true },
         { title: 'Yes Votes', value: stats.yes_votes, short: true },
         { title: 'No Votes', value: stats.no_votes, short: true },
         { title: 'Fit', value: averages.fit.toFixed(2), short: true },

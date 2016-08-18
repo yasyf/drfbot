@@ -87,6 +87,8 @@ export type Company = {
   pitch_on: ?number,
   pitched: boolean,
   snapshot_link: ?string,
+  rdv_funded: boolean,
+  capital_raised: string,
   stats: {
     yes_votes: number,
     no_votes: number,
