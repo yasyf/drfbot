@@ -79,6 +79,8 @@ type Partner = {
   slack_id: string,
 }
 export type Company = {
+  domain: ?string,
+  description: ?string,
   funded: boolean,
   id: number,
   name: string,

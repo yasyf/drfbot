@@ -53,10 +53,21 @@ export default class BaseInteraction {
       status = 'Funded';
     }
 
+    let partners;
+    if (company.partners.length) {
+      const users = company.partners.map(partner => `<@${partner.slack_id}>`);
+      partners = users.join(', ');
+    } else {
+      partners = 'No partners assigned';
+    }
+
     if (company.pitched && company.past_deadline) {
       const { stats } = company;
       const { averages } = stats;
+
       fields = [
+        { title: 'Status', value: status, short: true },
+        { title: 'Partners', value: partners, short: true },
         { title: 'RDV Funded', value: company.rdv_funded ? '✓' : '✗', short: true },
         { title: 'Raised', value: company.capital_raised, short: true },
         { title: 'Yes Votes', value: stats.yes_votes, short: true },
@@ -68,10 +79,10 @@ export default class BaseInteraction {
       ];
     }
 
-    let partners = 'No partners assigned';
-    if (company.partners.length) {
-      const users = company.partners.map(partner => `<@${partner.slack_id}>`);
-      partners = `Partners: ${users.join(', ')}`;
+    let thumbUrl;
+    if (company.domain) {
+      thumbUrl =
+        `https://icons.better-idea.org/icon?url=${company.domain}&size=75`;
     }
 
     const footerItems = [`<${company.trello_url}|Trello>`];
@@ -84,9 +95,10 @@ export default class BaseInteraction {
       fallback: `${company.name} (${company.trello_url})`,
       color,
       footer,
+      thumb_url: thumbUrl,
       title: company.name,
       title_link: API.url(`companies/${company.id}`),
-      text: `${status}. ${partners}.`,
+      text: company.description,
       fields,
       ts: company.pitch_on,
     };
