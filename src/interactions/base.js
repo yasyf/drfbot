@@ -35,7 +35,11 @@ export default class BaseInteraction {
     return [{ text }];
   }
 
-  static companyAttachment(company: Company): Attachments {
+  static companyAttachment(
+    company: Company,
+    message: Message,
+    bot: SlackBot,
+  ): Attachments {
     let color = 'danger';
     let status = 'Passed';
     let fields = [];
@@ -89,6 +93,9 @@ export default class BaseInteraction {
     if (company.snapshot_link) {
       footerItems.push(`<${company.snapshot_link}|Snapshot>`);
     }
+    const reportURL =
+      API.url(`feedback?channel=${message.channel}&bot=${bot.identity.id}`);
+    footerItems.push(`<${reportURL}|Annoying!>`);
     const footer = footerItems.join(' | ');
 
     const attachment = {

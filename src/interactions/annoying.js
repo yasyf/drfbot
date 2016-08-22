@@ -7,7 +7,7 @@ import BaseInteraction from './base';
 import config from '../config';
 
 export default class AnnoyingInteraction extends BaseInteraction {
-  patterns = ['was annoying'];
+  patterns = ['annoying'];
   messageTypes = ['direct_mention'];
 
   hook(bot: SlackBot, message: Message) {
@@ -15,9 +15,14 @@ export default class AnnoyingInteraction extends BaseInteraction {
     let timestamp;
     let channelName;
     let domain;
+
+    const annoyedUser =
+      message.entities.slack_user
+      ? message.entities.slack_user.slice(1, -1)
+      : message.user;
     const users = [
       bot.identity.id,
-      message.user,
+      annoyedUser,
       config.get('COMPLAINT_USER'),
     ].join(',');
 
@@ -30,9 +35,9 @@ export default class AnnoyingInteraction extends BaseInteraction {
         `https://${domain}.slack.com/archives/${channelName}/p${timestamp}`;
       const text =
         'Okay!'
-        + ` <@${message.user}> found something annoying in <#${message.channel}>.`
+        + ` <@${annoyedUser}> found something annoying in <#${message.channel}>.`
         + " I've duplicated it above. Let's figure out what went wrong!"
-        + `\n<@${message.user}>, can you give <@${config.get('COMPLAINT_USER')}>`
+        + `\n<@${annoyedUser}>, can you give <@${config.get('COMPLAINT_USER')}>`
         + ` some more details on what you disliked about ${url}?`;
       bot.say({ channel, ...lastMessage }, () => {
         bot.say({ channel, text });

@@ -20,7 +20,11 @@ export default class CompanyInteraction extends BaseInteraction {
         const company = companies.first();
         bot.reply(message, {
           text: `<@${message.user}>\n${company.trello_url}`,
-          attachments: CompanyInteraction.companyAttachment(company),
+          attachments: CompanyInteraction.companyAttachment(
+            company,
+            message,
+            bot,
+          ),
         });
       }
     };

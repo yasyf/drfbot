@@ -22,7 +22,11 @@ export default class CompanyMentionInteraction extends BaseInteraction {
         return;
       }
       bot.reply(message, {
-        attachments: CompanyMentionInteraction.companyAttachment(company),
+        attachments: CompanyMentionInteraction.companyAttachment(
+          company,
+          message,
+          bot,
+        ),
       });
     };
     api.getCompany(message.match[0]).then(handleCompany);
