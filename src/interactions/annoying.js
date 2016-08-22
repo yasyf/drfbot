@@ -63,7 +63,11 @@ export default class AnnoyingInteraction extends BaseInteraction {
       timestamp = lastMessage.ts.replace('.', '');
       bot.api.channels.info({ channel: message.channel }, handleChannelInfo);
     };
-    bot.api.channels.history(
+    const conversationType =
+      message.channel[0] === 'C'
+      ? 'channels'
+      : 'groups';
+    bot.api[conversationType].history(
       { channel: message.channel },
       handleSearchResults,
     );
