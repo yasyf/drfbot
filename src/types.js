@@ -55,7 +55,14 @@ export type Logger = {
 }
 
 export type SlackBot = {
+  api: Object,
+  botkit: {
+    storeage: Storage,
+  },
+  identity: Object,
+  logger: Logger,
   reply: (message: Message, response: string|Response) => void,
+  say: (message: { channel: string, text: string }) => void,
 };
 
 export type Hook = (bot: SlackBot, message: Message) => void;
@@ -64,6 +71,10 @@ export type Controller = {
   log: Logger,
   hears: any,
   spawn: (options: {token: string}) => any,
+  middleware: {
+    receive: Object,
+    send: Object,
+  },
   storage: Storage,
 };
 

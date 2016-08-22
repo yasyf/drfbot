@@ -9,13 +9,14 @@ const client = new Wit({
   apiVersion: config.get('WIT_API_VERSION'),
 });
 
+const MAX_MESSAGE_LENGTH = 256;
 const MIN_CONFIDENCE = 0.7;
 
 const Middleware = {
   receive(bot: SlackBot, message: Message, next: () => void) {
     message.intent = 'none';
     message.entities = { intent: 'none' };
-    if (!message.text) {
+    if (!message.text || message.text.length > MAX_MESSAGE_LENGTH) {
       next();
       return;
     }
@@ -29,6 +30,9 @@ const Middleware = {
           message.entities[name] = ents[0].value;
         }
       });
+      next();
+    }).catch(err => {
+      bot.logger.error(err);
       next();
     });
   },
