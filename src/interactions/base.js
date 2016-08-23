@@ -41,11 +41,15 @@ export default class BaseInteraction {
     bot: SlackBot,
   ): Attachments {
     let color = 'danger';
-    let status = 'Passed';
-    let fields = [];
+    let status = 'Passed (Pitched)';
+    const fields = [];
     if (!company.pitch_on) {
       color = '#d3d3d3';
-      status = 'In Pipeline';
+      if (company.passed) {
+        status = 'Passed (No Pitch)';
+      } else {
+        status = 'In Pipeline';
+      }
     } else if (!company.pitched) {
       color = '#439FE0';
       status = 'Pitch Scheduled';
@@ -65,22 +69,25 @@ export default class BaseInteraction {
       partners = 'No partners assigned';
     }
 
+    fields.push(...[
+      { title: 'Status', value: status, short: true },
+      { title: 'Partners', value: partners, short: true },
+      { title: 'RDV Funded', value: company.rdv_funded ? '✓' : '✗', short: true },
+      { title: 'Raised', value: company.capital_raised, short: true },
+    ]);
+
     if (company.pitched && company.past_deadline) {
       const { stats } = company;
       const { averages } = stats;
 
-      fields = [
-        { title: 'Status', value: status, short: true },
-        { title: 'Partners', value: partners, short: true },
-        { title: 'RDV Funded', value: company.rdv_funded ? '✓' : '✗', short: true },
-        { title: 'Raised', value: company.capital_raised, short: true },
+      fields.push(...[
         { title: 'Yes Votes', value: stats.yes_votes, short: true },
         { title: 'No Votes', value: stats.no_votes, short: true },
         { title: 'Fit', value: averages.fit.toFixed(2), short: true },
         { title: 'Team', value: averages.team.toFixed(2), short: true },
         { title: 'Product', value: averages.product.toFixed(2), short: true },
         { title: 'Market', value: averages.market.toFixed(2), short: true },
-      ];
+      ]);
     }
 
     let thumbUrl;
