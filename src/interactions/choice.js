@@ -11,7 +11,7 @@ export default class ChoiceInteraction extends BaseInteraction {
 
   hook(bot: SlackBot, message: Message) {
     const options = message.match[1].split(/, ?/);
-    const index = util.randInt(0, options.length);
+    const index = util.randInt(0, options.length - 1);
     const selected = options[index];
     const percent = Number(((1 / options.length) * 100).toFixed(2));
     const attachment = {
