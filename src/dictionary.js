@@ -1,16 +1,21 @@
 /* @flow */
 
-import * as Immutable from 'immutable';
+import { Set } from 'immutable';
 
 import fs from 'fs';
 
+// Names which collide with companies
+const NAMES = [
+  'alex',
+];
+
 class Dictionary {
-  words: Immutable.Set<string>;
+  words: Set<string>;
 
   constructor() {
     const dict =
       fs.readFileSync(`${__dirname}/../words/en.txt`).toString('utf-8');
-    this.words = Immutable.Set(dict.split('\n'));
+    this.words = Set(dict.split('\n')).union(Set(NAMES));
   }
 
   contains(word: string): boolean {
