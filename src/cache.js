@@ -15,10 +15,10 @@ export default class Cache<T> {
     });
   }
 
-  set(key: string, value: T): Promise<T> {
+  set(key: string, value: T, timeout?: number = 3600): Promise<T> {
     const encoded = JSON.stringify(value);
     return util
-      .promisify(handleFn => this.client.set(key, encoded, handleFn))
+      .promisify(handleFn => this.client.setex(key, timeout, encoded, handleFn))
       .then(_result => value);
   }
 
