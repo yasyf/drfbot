@@ -9,7 +9,7 @@ import dictionary from '../dictionary';
 import moment from 'moment';
 import util from '../util';
 
-const MENTION_THRESHOLD = 15; // minutes
+const MENTION_THRESHOLD = 60; // minutes
 const MIN_NAME_LENGTH = 3;
 
 export default class CompanyMentionInteraction extends BaseInteraction {
