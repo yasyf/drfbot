@@ -57,7 +57,7 @@ export type Logger = {
 export type SlackBot = {
   api: Object,
   botkit: {
-    storeage: Storage,
+    storage: Storage,
   },
   identity: Object,
   logger: Logger,

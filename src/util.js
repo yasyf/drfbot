@@ -18,6 +18,12 @@ const Util = {
   randInt(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   },
+  warn(err: ?Object) {
+    if (err) {
+      // eslint-disable-next-line no-console
+      console.warn(err);
+    }
+  },
 };
 
 export default Util;
