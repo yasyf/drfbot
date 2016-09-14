@@ -3,7 +3,7 @@
 
 import * as Immutable from 'immutable';
 
-import type { Company, Pattern } from './types';
+import type { Company, Pattern, VotingStatus } from './types';
 
 import Cache from './cache';
 import config from './config';
@@ -67,6 +67,10 @@ export class API {
     return this
       .post(`companies/${companyID}/reject`)
       .then((_body) => undefined);
+  }
+
+  getVotingStatus(companyID: number): Promise<VotingStatus> {
+    return this.get(`companies/${companyID}/voting_status`);
   }
 
   getCompanies(): Promise<Immutable.List<Company>> {

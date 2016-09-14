@@ -6,7 +6,8 @@ export type Entity = {
   confidence: number,
   value: string,
 };
-export type Intent = 'none' | 'point_partner' | 'snapshot' | 'send_love';
+export type Intent =
+  'none' | 'point_partner' | 'snapshot' | 'send_love' | 'voting_status';
 export type Message = {
   bot_id?: string,
   channel: string,
@@ -116,3 +117,12 @@ export type Company = {
   trello_id: string,
   trello_url: string,
 };
+
+type VotingStatusNotStarted = { status: 'not_started' };
+type VotingStatusMissingUsers = {
+  status: 'missing_users',
+  users: Array<Partner>,
+};
+type VotingStatusComplete = { status: 'complete', funded: boolean };
+export type VotingStatus =
+  VotingStatusNotStarted | VotingStatusMissingUsers | VotingStatusComplete;

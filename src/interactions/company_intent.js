@@ -13,7 +13,7 @@ export default class CompanyIntentInteraction extends BaseInteraction {
   responseFromCompany(
     _company: Company,
     _message: Message
-  ): ?string | ?Response {
+  ): ?string | ?Response | Promise<?string> | Promise<?Response> {
     return null;
   }
 
@@ -26,10 +26,13 @@ export default class CompanyIntentInteraction extends BaseInteraction {
       if (!company.partners.length) {
         return;
       }
-      const response = this.responseFromCompany(company, message);
-      if (response) {
-        bot.reply(message, response);
-      }
+      Promise
+        .resolve(this.responseFromCompany(company, message))
+        .then(response => {
+          if (response) {
+            bot.reply(message, response);
+          }
+        });
     };
     api.searchCompanies(message.entities.company).then(handleCompanies);
   }

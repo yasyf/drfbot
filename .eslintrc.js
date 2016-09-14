@@ -29,6 +29,7 @@ module.exports = {
       },
     ],
     "new-cap": "off",
+    "default-case": "off",
     "flowtype/define-flow-type": "error",
     "flowtype/require-valid-file-annotation": [
       "error",
