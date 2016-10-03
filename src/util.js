@@ -24,6 +24,12 @@ const Util = {
       console.warn(err);
     }
   },
+  error(err: ?Object) {
+    if (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+    }
+  },
 };
 
 export default Util;

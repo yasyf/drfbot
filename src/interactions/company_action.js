@@ -5,6 +5,7 @@ import type { Company, Message, SlackBot } from '../types';
 import BaseInteraction from './base';
 
 import api from '../api';
+import util from '../util';
 
 export default class CompanyActionInteraction extends BaseInteraction {
   abstract = true;
@@ -20,6 +21,13 @@ export default class CompanyActionInteraction extends BaseInteraction {
 
   actionPromise(_message: Message, _company: Company): Promise<void> {
     return Promise.resolve();
+  }
+
+  responseFromCompany(
+    _company: Company,
+    _message: Message
+  ): ?string | ?Response | Promise<?string> | Promise<?Response> {
+    return null;
   }
 
   hook(bot: SlackBot, message: Message) {
@@ -41,11 +49,12 @@ export default class CompanyActionInteraction extends BaseInteraction {
         bot.reply(message, reply);
         return;
       }
-
       this.actionPromise(message, companies.first())
         .then(() => handleAction(true))
         .catch(() => handleAction(false));
     };
-    api.searchCompanies(searchTerm).then(handleCompanies);
+    api.searchCompanies(searchTerm)
+      .then(handleCompanies)
+      .catch(util.warn);
   }
 }

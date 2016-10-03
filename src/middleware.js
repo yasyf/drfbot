@@ -3,6 +3,7 @@
 import type { Entity, Message, SlackBot } from './types';
 import { Wit } from 'node-wit';
 import config from './config';
+import util from './util';
 
 const client = new Wit({
   accessToken: config.get('WIT_API_TOKEN'),
@@ -32,7 +33,7 @@ const Middleware = {
       });
       next();
     }).catch(err => {
-      bot.logger.error(err);
+      util.warn(err);
       next();
     });
   },

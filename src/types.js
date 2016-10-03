@@ -12,7 +12,7 @@ export type Message = {
   bot_id?: string,
   channel: string,
   event: string,
-  match: Array<string>,
+  match: { index: number, input: string },
   team: string,
   text: string,
   ts: string,
@@ -61,7 +61,6 @@ export type SlackBot = {
     storage: Storage,
   },
   identity: Object,
-  logger: Logger,
   reply: (message: Message, response: string|Response) => void,
   say: (message: { channel: string, text: string }) => void,
 };

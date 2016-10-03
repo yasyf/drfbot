@@ -69,6 +69,12 @@ export class API {
       .then((_body) => undefined);
   }
 
+  invalidateCompany(companyID: number): Promise<void> {
+    return this
+      .post(`companies/${companyID}/invalidate_crunchbase`)
+      .then((_body) => undefined);
+  }
+
   getVotingStatus(companyID: number): Promise<VotingStatus> {
     return this.get(`companies/${companyID}/voting_status`);
   }

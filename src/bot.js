@@ -6,6 +6,7 @@ import Botkit from 'botkit';
 import config from './config';
 import middleware from './middleware';
 import redisStorage from 'botkit-storage-redis';
+import util from './util';
 
 export default class Bot {
   controller: Controller;
@@ -40,7 +41,7 @@ export default class Bot {
 
   hookInteraction(interaction: Interaction): Promise<mixed> {
     return Promise.resolve(interaction.patterns).then(patterns => {
-      let hook = interaction.hook;
+      let hook;
       if (interaction.messageTypes.includes('ambient')) {
         hook = (bot, message) => {
           if (message.bot_id) {
@@ -48,19 +49,30 @@ export default class Bot {
           }
           interaction.hook(bot, message);
         };
+      } else {
+        hook = (bot, message) => {
+          interaction.hook(bot, message);
+        };
       }
+      const wrappedHook = (...args) => {
+        try {
+          hook(...args);
+        } catch (e) {
+          util.warn(e);
+        }
+      };
       if (interaction.intents) {
         return this.controller.hears(
           interaction.intents,
           interaction.messageTypes,
           middleware.hears,
-          hook,
+          wrappedHook,
         );
       }
       return this.controller.hears(
         patterns instanceof Immutable.List ? patterns.toArray() : patterns,
         interaction.messageTypes,
-        hook,
+        wrappedHook,
       );
     });
   }
