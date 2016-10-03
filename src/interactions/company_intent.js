@@ -8,7 +8,7 @@ import api from '../api';
 
 export default class CompanyIntentInteraction extends BaseInteraction {
   abstract = true;
-  messageTypes = ['ambient'];
+  messageTypes = ['ambient', 'direct_mention'];
 
   responseFromCompany(
     _company: Company,
