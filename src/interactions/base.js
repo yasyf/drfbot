@@ -102,7 +102,7 @@ export default class BaseInteraction {
     }
     const reportURL =
       API.url(`feedback?channel=${message.channel}&bot=${bot.identity.id}`);
-    footerItems.push(`<${reportURL}|Annoying!>`);
+    footerItems.push(`<${reportURL}|Report>`);
     const footer = footerItems.join(' | ');
 
     const attachment = {
