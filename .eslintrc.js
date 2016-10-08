@@ -6,6 +6,7 @@ module.exports = {
     "flowtype",
   ],
   "rules": {
+    "class-methods-use-this": "off",
     "import/no-unresolved": "off",
     "sort-imports": "warn",
     "no-trailing-spaces": "warn",

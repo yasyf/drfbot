@@ -9,9 +9,9 @@ const NAMESPACE = 'botkit:custom:cache';
 export default class Cache<T> {
   client: Object;
 
-  constructor() {
+  constructor(prefix?: string) {
     this.client = redis.createClient(config.get('REDIS_URL'), {
-      prefix: NAMESPACE,
+      prefix: prefix ? `${prefix}:${NAMESPACE}` : NAMESPACE,
     });
   }
 
@@ -22,10 +22,10 @@ export default class Cache<T> {
       .then(_result => value);
   }
 
-  get(key: string): Promise<T> {
+  get(key: string): Promise<T | null> {
     return util
       .promisify(handleFn => this.client.get(key, handleFn))
-      .then(result => JSON.parse(result));
+      .then(result => result ? JSON.parse(result) : null);
   }
 
   getOrGenerate(key: string, genFn: () => Promise<T>): Promise<T> {

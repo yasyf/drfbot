@@ -3,14 +3,15 @@
 import type { Message, SlackBot } from '../types';
 
 import BaseInteraction from './base';
+import Cache from '../cache';
 
 import api from '../api';
 import dictionary from '../dictionary';
-import moment from 'moment';
-import util from '../util';
 
-const MENTION_THRESHOLD = 180; // minutes
+const MENTION_THRESHOLD = 10800; // seconds == 180 minutes
 const MIN_NAME_LENGTH = 4;
+
+const mentionsCache: Cache<boolean> = new Cache();
 
 export default class CompanyMentionInteraction extends BaseInteraction {
   patterns = api.getCompanyPatterns();
@@ -24,21 +25,12 @@ export default class CompanyMentionInteraction extends BaseInteraction {
     ) {
       return;
     }
-    const handleMentions = (company, mentions) => {
-      const lastMention = mentions[company.name];
-      mentions[company.name] = moment();
-      bot.botkit.storage.channels.save(
-        {
-          id: message.channel,
-          companyMentions: mentions,
-        },
-        util.warn,
-      );
 
-      if (
-        lastMention
-        && moment().diff(moment(lastMention), 'minutes') < MENTION_THRESHOLD
-      ) {
+    const keyFn = company => `${message.channel}:${company.name}`;
+
+    const handleCompanyAndMention = ({ company, mention }) => {
+      mentionsCache.set(keyFn(company), true, MENTION_THRESHOLD);
+      if (mention) {
         return;
       }
       bot.reply(message, {
@@ -49,15 +41,13 @@ export default class CompanyMentionInteraction extends BaseInteraction {
         ),
       });
     };
-    const handleCompany = company => {
-      bot.botkit.storage.channels.get(message.channel, (err, channelData) => {
-        if (err) {
-          util.warn(err);
-        } else {
-          handleMentions(company, (channelData || {}).companyMentions || {});
-        }
-      });
-    };
-    api.getCompany(message.entities.company).then(handleCompany);
+    const handleCompany = company =>
+      mentionsCache
+        .get(keyFn(company))
+        .then(mention => ({ mention, company }));
+    api
+      .getCompany(message.entities.company)
+      .then(handleCompany)
+      .then(handleCompanyAndMention);
   }
 }
