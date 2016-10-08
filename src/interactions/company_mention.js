@@ -10,14 +10,18 @@ import moment from 'moment';
 import util from '../util';
 
 const MENTION_THRESHOLD = 180; // minutes
-const MIN_NAME_LENGTH = 3;
+const MIN_NAME_LENGTH = 4;
 
 export default class CompanyMentionInteraction extends BaseInteraction {
   patterns = api.getCompanyPatterns();
   messageTypes = ['ambient'];
 
   hook(bot: SlackBot, message: Message) {
-    if (!message.entities.company) {
+    if (
+      !message.entities.company
+      || message.entities.company.length < MIN_NAME_LENGTH
+      || dictionary.contains(message.entities.company)
+    ) {
       return;
     }
     const handleMentions = (company, mentions) => {
