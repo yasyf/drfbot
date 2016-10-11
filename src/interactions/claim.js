@@ -7,6 +7,8 @@ import CompanyActionInteraction from './company_action';
 import api from '../api';
 
 export default class ClaimInteraction extends CompanyActionInteraction {
+  helpText = 'allocates a partner for a company which applied on the site';
+  exampleText = '*claim* _Spyce_';
   abstract = false;
   patterns = [/^claim (.*)$/i];
 

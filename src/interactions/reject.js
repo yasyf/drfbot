@@ -7,6 +7,8 @@ import CompanyActionInteraction from './company_action';
 import api from '../api';
 
 export default class RejectInteraction extends CompanyActionInteraction {
+  helpText = 'passes on a company';
+  exampleText = '*reject* _Spyce_'
   abstract = false;
   patterns = [/^reject (.*)$/i];
 

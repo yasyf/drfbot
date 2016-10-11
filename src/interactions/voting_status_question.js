@@ -8,11 +8,13 @@ import api from '../api';
 
 export default class VotingStatusQuestionInteraction
   extends CompanyIntentInteraction {
+  helpText = 'shows the pending votes for a pitch';
+  exampleText = "What's the voting status for _Spyce_?";
   abstract = false;
   intents = ['voting_status'];
 
   responseFromCompany(company: Company, message: Message): Promise<?string> {
-    const handleVotingStatus = votingStatus => {
+    const handleVotingStatus = (votingStatus) => {
       switch (votingStatus.status) {
         case 'not_started':
           return `<@${message.user}>: Voting has not yet started`;

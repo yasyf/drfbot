@@ -18,7 +18,7 @@ export default class CompanyIntentInteraction extends BaseInteraction {
   }
 
   hook(bot: SlackBot, message: Message) {
-    const handleCompanies = companies => {
+    const handleCompanies = (companies) => {
       if (!companies.size) {
         return;
       }
@@ -28,7 +28,7 @@ export default class CompanyIntentInteraction extends BaseInteraction {
       }
       Promise
         .resolve(this.responseFromCompany(company, message))
-        .then(response => {
+        .then((response) => {
           if (response) {
             bot.reply(message, response);
           }

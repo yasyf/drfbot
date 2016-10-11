@@ -15,6 +15,8 @@ import { API } from '../api';
 import fs from 'fs';
 
 export default class BaseInteraction {
+  helpText: ?string;
+  exampleText: ?string;
   abstract: boolean = false;
   intents: Array<Intent> | void;
   patterns: AsyncPatterns | void;
@@ -24,15 +26,32 @@ export default class BaseInteraction {
     throw new Error('Subclass of BaseInteraction must define hook()!');
   }
 
+  static genAllHelpText(): string {
+    return this.loadAll()
+      .filter(interaction => interaction.exampleText)
+      .map((interaction) => {
+        let text = '';
+        if (!interaction.messageTypes.includes('ambient')) {
+          text = '@drfbot: ';
+        }
+        text = `${text}${interaction.exampleText}`;
+        if (interaction.helpText) {
+          text = `${text}\n\t${interaction.helpText}`;
+        }
+        return text;
+      })
+      .join('\n');
+  }
+
   static loadAll(): Array<BaseInteraction> {
-    return fs.readdirSync(__dirname).map(file => {
+    return fs.readdirSync(__dirname).map((file) => {
       const InteractionClass = require(`./${file}`).default;
       return new InteractionClass();
     }).filter(x => x.constructor !== BaseInteraction && !x.abstract);
   }
 
-  static textAttachment(text: string): Attachments {
-    return [{ text }];
+  static textAttachment(text: string, format?: boolean): Attachments {
+    return [{ text, mrkdwn_in: format ? ['text'] : [] }];
   }
 
   static companyAttachment(

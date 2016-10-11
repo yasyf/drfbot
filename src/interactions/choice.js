@@ -6,6 +6,8 @@ import BaseInteraction from './base';
 import util from '../util';
 
 export default class ChoiceInteraction extends BaseInteraction {
+  helpText = 'selects randomly from the given options';
+  exampleText = '*choose* _red, green, blue_';
   patterns = [/^(?:choose|choice|pick|random) ((?:[\w\s]+,?)+)/i];
   messageTypes = ['direct_mention'];
 

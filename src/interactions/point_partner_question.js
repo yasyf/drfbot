@@ -6,6 +6,8 @@ import CompanyIntentInteraction from './company_intent';
 
 export default class PointPartnerQuestionInteraction
   extends CompanyIntentInteraction {
+  helpText = 'shows the assigned parners for a company';
+  exampleText = 'Who are the point partners for _Spyce_?';
   abstract = false;
   intents = ['point_partner'];
 

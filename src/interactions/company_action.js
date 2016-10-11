@@ -32,7 +32,7 @@ export default class CompanyActionInteraction extends BaseInteraction {
 
   hook(bot: SlackBot, message: Message) {
     const searchTerm = message.match[1];
-    const handleAction = success => {
+    const handleAction = (success) => {
       let reply;
       if (success) {
         reply = this.successReply(message, searchTerm);
@@ -43,7 +43,7 @@ export default class CompanyActionInteraction extends BaseInteraction {
         bot.reply(message, reply);
       }
     };
-    const handleCompanies = companies => {
+    const handleCompanies = (companies) => {
       if (companies.size === 0) {
         const reply = `<@${message.user}>: ${searchTerm} was not found!`;
         bot.reply(message, reply);

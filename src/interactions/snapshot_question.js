@@ -6,6 +6,8 @@ import CompanyIntentInteraction from './company_intent';
 
 export default class SnapshotQuestionInteraction
   extends CompanyIntentInteraction {
+  helpText = 'shows the snapshot for a company';
+  exampleText = 'Where is the snapshot for _Spyce_?';
   abstract = false;
   intents = ['snapshot'];
 
