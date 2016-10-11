@@ -9,7 +9,7 @@ const MAX_OFFSET = 100;
 export default class SendLoveInteraction {
   helpText = 'sends some love to a fellow partner';
   exampleText = 'Send some love to _@yasyf_';
-  messageTypes = ['ambient'];
+  messageTypes = ['ambient', 'direct_mention'];
   intents = ['send_love'];
 
   hook(bot: SlackBot, message: Message) {

@@ -21,18 +21,21 @@ const Middleware = {
       next();
       return;
     }
-    client.message(message.text, {}).then(data => {
+    client.message(message.text, {}).then((data) => {
       if (data.entities.intent) {
         message.intent = data.entities.intent[0].value;
       }
-      Object.keys(data.entities).forEach(name => {
+      Object.keys(data.entities).forEach((name) => {
         const ents: Array<Entity> = data.entities[name];
-        if (ents.length && ents[0].confidence > MIN_CONFIDENCE) {
-          message.entities[name] = ents[0].value;
+        for (const ent of ents) {
+          if (ent.confidence > MIN_CONFIDENCE) {
+            message.entities[name] = ent.value;
+            break;
+          }
         }
       });
       next();
-    }).catch(err => {
+    }).catch((err) => {
       util.warn(err);
       next();
     });
