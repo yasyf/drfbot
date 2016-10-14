@@ -9,6 +9,9 @@ export default class LadiesAndGentsInteraction extends BaseInteraction {
   messageTypes = ['ambient'];
 
   hook(bot: SlackBot, message: Message) {
+    if (message.text.includes('<!channel>')) {
+      return;
+    }
     const announcement = `${message.match[1]}${message.match[2]}`.trim();
     bot.reply(message, {
       text: `<!channel>: <@${message.user}> would like you to know this!`,
