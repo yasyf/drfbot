@@ -36,6 +36,7 @@ export default class Bot {
   start(token?: string) {
     this.controller.spawn({
       token: token || config.get('SLACK_BOT_TOKEN'),
+      retry: Infinity,
     }).startRTM();
   }
 
