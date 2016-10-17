@@ -8,6 +8,8 @@ import middleware from './middleware';
 import redisStorage from 'botkit-storage-redis';
 import util from './util';
 
+const FIVE_HOURS = 18000000;
+
 export default class Bot {
   controller: Controller;
   logger: Logger;
@@ -22,6 +24,10 @@ export default class Bot {
     this.controller.middleware.receive.use(middleware.receive);
     this.logger = this.controller.log;
     this.interations = [];
+    this.bot = this.controller.spawn({
+      token: (options && options.token) || config.get('SLACK_BOT_TOKEN'),
+      retry: Infinity,
+    });
   }
 
   addInteractions(interactions: Array<Interaction>): Promise<mixed> {
@@ -33,11 +39,12 @@ export default class Bot {
     return Promise.all(hookPromises);
   }
 
-  start(token?: string) {
-    this.controller.spawn({
-      token: token || config.get('SLACK_BOT_TOKEN'),
-      retry: Infinity,
-    }).startRTM();
+  start() {
+    this.bot.startRTM();
+    setInterval(() => {
+      this.bot.closeRTM();
+      this.bot.startRTM();
+    }, FIVE_HOURS);
   }
 
   hookInteraction(interaction: Interaction): Promise<mixed> {
