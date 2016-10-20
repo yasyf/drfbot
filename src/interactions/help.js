@@ -6,7 +6,7 @@ import BaseInteraction from './base';
 
 export default class HelpInteraction extends BaseInteraction {
   patterns = ['help'];
-  messageTypes = ['direct_mention'];
+  messageTypes = ['direct_mention', 'direct_message'];
   allHelpText: ?string;
 
   hook(bot: SlackBot, message: Message) {

@@ -9,7 +9,7 @@ export default class ChoiceInteraction extends BaseInteraction {
   helpText = 'selects randomly from the given options';
   exampleText = '*choose* _red, green, blue_';
   patterns = [/^(?:choose|choice|pick|random) ((?:[\w\s]+,?)+)/i];
-  messageTypes = ['direct_mention'];
+  messageTypes = ['direct_mention', 'direct_message'];
 
   hook(bot: SlackBot, message: Message) {
     const options = message.match[1].split(/, ?/);
