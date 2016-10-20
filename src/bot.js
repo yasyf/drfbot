@@ -39,12 +39,17 @@ export default class Bot {
     return Promise.all(hookPromises);
   }
 
+  restart() {
+    this.bot.closeRTM();
+    this.bot.startRTM();
+  }
+
   start() {
     this.bot.startRTM();
-    setInterval(() => {
-      this.bot.closeRTM();
-      this.bot.startRTM();
-    }, FIVE_HOURS);
+    this.controller.on('rtm_close', this.restart.bind(this));
+    this.controller.on('rtm_failed', this.restart.bind(this));
+    this.controller.on('rtm_reconnect_failed', this.restart.bind(this));
+    setInterval(this.restart.bind(this), FIVE_HOURS);
   }
 
   hookInteraction(interaction: Interaction): Promise<mixed> {
