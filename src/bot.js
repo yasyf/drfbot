@@ -45,10 +45,9 @@ export default class Bot {
   }
 
   start() {
-    this.bot.startRTM();
-    this.controller.on('rtm_close', this.restart.bind(this));
     this.controller.on('rtm_failed', this.restart.bind(this));
     this.controller.on('rtm_reconnect_failed', this.restart.bind(this));
+    this.bot.startRTM();
     setInterval(this.restart.bind(this), FIVE_HOURS);
   }
 
