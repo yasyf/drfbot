@@ -88,10 +88,17 @@ export default class BaseInteraction {
       partners = 'No partners assigned';
     }
 
+    let competitors;
+    if (company.competitors.length) {
+      competitors = company.competitors.map(competitor => competitor.acronym).join(', ');
+    } else {
+      competitors = '✗';
+    }
+
     fields.push(...[
       { title: 'Status', value: status, short: true },
       { title: 'Partners', value: partners, short: true },
-      { title: 'RDV Funded', value: company.rdv_funded ? '✓' : '✗', short: true },
+      { title: 'Competitors', value: competitors, short: true },
       { title: 'Raised', value: company.capital_raised, short: true },
     ]);
 
