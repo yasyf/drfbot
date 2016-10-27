@@ -62,7 +62,10 @@ export default class BaseInteraction {
     let color = 'danger';
     let status = 'Passed (Pitched)';
     const fields = [];
-    if (!company.pitch_on) {
+    if (company.funded) {
+      color = 'good';
+      status = 'Funded';
+    } else if (!company.pitch_on) {
       color = '#d3d3d3';
       if (company.passed) {
         status = 'Passed (No Pitch)';
@@ -75,9 +78,6 @@ export default class BaseInteraction {
     } else if (!company.past_deadline) {
       color = 'warning';
       status = 'In Voting';
-    } else if (company.funded) {
-      color = 'good';
-      status = 'Funded';
     }
 
     let partners;
