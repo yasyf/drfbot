@@ -59,25 +59,23 @@ export default class BaseInteraction {
     message: Message,
     bot: SlackBot,
   ): Attachments {
-    let color = 'danger';
-    let status = 'Passed (Pitched)';
+    let color, status;
     const fields = [];
     if (company.funded) {
       color = 'good';
       status = 'Funded';
-    } else if (!company.pitch_on) {
-      color = '#d3d3d3';
-      if (company.passed) {
-        status = 'Passed (No Pitch)';
-      } else {
-        status = 'In Pipeline';
-      }
-    } else if (!company.pitched) {
+    } else if (company.passed) {
+      color = 'danger';
+      status = 'Passed (No Pitch)';
+    } else if (!company.pitched && company.pitch_on) {
       color = '#439FE0';
       status = 'Pitch Scheduled';
-    } else if (!company.past_deadline) {
+    } else if (!company.past_deadline && company.pitch_on) {
       color = 'warning';
       status = 'In Voting';
+    } else {
+      color = '#d3d3d3';
+      status = 'In Pipeline';
     }
 
     let partners;
