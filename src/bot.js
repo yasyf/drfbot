@@ -8,7 +8,7 @@ import middleware from './middleware';
 import redisStorage from 'botkit-storage-redis';
 import util from './util';
 
-const FIVE_HOURS = 18000000;
+const ONE_HOUR = 3600000;
 
 export default class Bot {
   controller: Controller;
@@ -48,7 +48,7 @@ export default class Bot {
     this.controller.on('rtm_failed', this.restart.bind(this));
     this.controller.on('rtm_reconnect_failed', this.restart.bind(this));
     this.bot.startRTM();
-    setInterval(this.restart.bind(this), FIVE_HOURS);
+    setInterval(this.restart.bind(this), ONE_HOUR);
   }
 
   hookInteraction(interaction: Interaction): Promise<mixed> {
