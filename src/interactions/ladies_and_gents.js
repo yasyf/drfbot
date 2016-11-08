@@ -14,7 +14,7 @@ export default class LadiesAndGentsInteraction extends BaseInteraction {
     }
     const announcement = `${message.match[1]}${message.match[2]}`.trim();
     bot.reply(message, {
-      text: `<!channel>: <@${message.user}> would like you to know this!`,
+      text: `<!here>: <@${message.user}> would like you to know this!`,
       attachments: LadiesAndGentsInteraction.textAttachment(
         announcement,
       ),
