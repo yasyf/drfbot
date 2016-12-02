@@ -1,6 +1,6 @@
 # DRFBot
 
-A Slack bot for DRF!
+A Slack bot for DRF! **Check out the readme [here](https://github.com/yasyf/vc#readme) for an overview**.
 
 ## Interactions
 
