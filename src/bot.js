@@ -19,6 +19,7 @@ export default class Bot {
     this.controller = Botkit.slackbot({
       debug: config.getBool('DEBUG'),
       storage: redisStorage(config.get('REDIS_URL')),
+      studio_token: config.get('STUDIO_TOKEN'),
       ...options,
     });
     this.controller.middleware.receive.use(middleware.receive);
@@ -34,6 +35,11 @@ export default class Bot {
     const hookPromises = interactions.map(interaction =>
       this.hookInteraction(interaction).then(_ =>
         this.interations.push(interaction)
+      )
+    );
+    this.controller.on('direct_message,direct_mention,mention', (bot, message) =>
+      this.controller.studio.runTrigger(bot, message.text, message.user, message.channel).catch(err =>
+        bot.reply(message, `I experienced an error with a request to Botkit Studio: ${err}`)
       )
     );
     return Promise.all(hookPromises);
