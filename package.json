@@ -32,19 +32,19 @@
     "foreman": "2.0.0"
   },
   "dependencies": {
-    "babel-cli": "6.16.0",
-    "babel-plugin-transform-flow-strip-types": "6.14.0",
-    "babel-preset-es2015": "6.16.0",
-    "babel-preset-es2016": "6.16.0",
-    "babel-preset-react": "6.16.0",
-    "babel-preset-stage-1": "6.16.0",
-    "botkit": "0.4.1",
+    "babel-cli": "6.23.0",
+    "babel-plugin-transform-flow-strip-types": "6.22.0",
+    "babel-preset-es2015": "6.22.0",
+    "babel-preset-es2016": "6.22.0",
+    "babel-preset-react": "6.22.0",
+    "babel-preset-stage-1": "6.22.0",
+    "botkit": "0.5.1",
     "botkit-storage-redis": "1.1.0",
     "immutable": "3.8.1",
     "moment": "2.15.1",
-    "node-wit": "4.1.0",
-    "redis": "2.6.3",
-    "request": "2.75.0",
-    "systemjs": "0.19.39"
+    "node-wit": "4.2.0",
+    "redis": "2.6.5",
+    "request": "2.79.0",
+    "systemjs": "0.20.9"
   }
 }
