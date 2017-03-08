@@ -57,6 +57,21 @@ export class API {
     return this._authenticatedRequest('POST', path, options);
   }
 
+  put(path: string, data?: Object): Promise<Object> {
+    const options = {
+      form: data,
+    };
+    return this._authenticatedRequest('PUT', path, options);
+  }
+
+  getEvent(eventID: string): Promise<void> {
+    return this.get(`events/${eventID}`).then((body) => body.event);
+  }
+
+  addEventNotes(eventID: string, notes: string): Promise<void> {
+    return this.put(`events/${eventID}`, { notes });
+  }
+
   allocateCompany(companyID: number, userID: string): Promise<void> {
     return this.post(`companies/${companyID}/allocate`, {
       user_slack_id: userID,
@@ -73,6 +88,10 @@ export class API {
     return this
       .post(`companies/${companyID}/invalidate_crunchbase`)
       .then((_body) => undefined);
+  }
+
+  getCompanyByID(companyID: number): Promise<void> {
+    return this.get(`companies/${companyID}`).then(body => body.company);
   }
 
   getVotingStatus(companyID: number): Promise<VotingStatus> {
