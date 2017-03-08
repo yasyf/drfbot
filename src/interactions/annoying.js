@@ -18,7 +18,7 @@ export default class AnnoyingInteraction extends BaseInteraction {
 
     const annoyedUser =
       message.entities.slack_user
-      ? message.entities.slack_user.slice(1, -1)
+      ? message.entities.slack_user.slice(2, -1)
       : message.user;
     const users = [
       bot.identity.id,
@@ -60,6 +60,9 @@ export default class AnnoyingInteraction extends BaseInteraction {
       }
       lastMessage =
         results.messages.find(res => res.user === bot.identity.id);
+      if (!lastMessage) {
+        return;
+      }
       timestamp = lastMessage.ts.replace('.', '');
       bot.api.channels.info({ channel: message.channel }, handleChannelInfo);
     };
