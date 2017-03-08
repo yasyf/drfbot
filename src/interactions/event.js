@@ -8,11 +8,12 @@ import api from '../api';
 import config from '../config';
 
 export default class EventInteraction extends BaseInteraction {
-  patterns = [/^event ([\w]+)$/i];
-  messageTypes = ['direct_mention'];
+  patterns = [/^calendar_event ([\w]+) ([\w]+)$/i];
+  messageTypes = ['direct_message'];
 
   hook(bot: SlackBot, message: Message) {
-    const eventID = message.match[1];
+    const userID = message.match[1];
+    const eventID = message.match[2];
 
     const notesCallback = (response, convo) => {
       convo.say('Thanks for that!');
@@ -38,39 +39,44 @@ export default class EventInteraction extends BaseInteraction {
       convo.next();
     };
 
-    const handleEventAndCompany = ({ event, company }) => {
-      bot.startConversation(message, (err, convo) => {
-        convo.say(`Hey <@${message.user}>!`);
-        convo.ask(
-          {
-            text: `Do you have a meeting coming up with ${company.name}?`,
-            attachments: EventInteraction.companyAttachment(
-              company,
-              message,
-              bot,
-            ),
-          },
-          [
+    const handleCompany = company => {
+      bot.api.im.open({ user: userID }, (err, imMeta) => {
+        if (err) {
+          return;
+        }
+        let respondTo = { channel: imMeta.channel.id, user: message.user };
+        bot.startConversation(respondTo, (err, convo) => {
+          convo.say(`Hey <@${message.user}>!`);
+          convo.ask(
             {
-              pattern: bot.utterances.yes,
-              callback: yesCallback,
+              text: `Do you have a meeting coming up with ${company.name}?`,
+              attachments: EventInteraction.companyAttachment(
+                company,
+                message,
+                bot,
+              ),
             },
-            {
-              pattern: bot.utterances.no,
-              callback: noCallback,
-            },
-          ]
-        )
+            [
+              {
+                pattern: bot.utterances.yes,
+                callback: yesCallback,
+              },
+              {
+                pattern: bot.utterances.no,
+                callback: noCallback,
+              },
+            ]
+          )
+        });
       });
     };
 
     const handleEvent = event =>
       api.getCompanyByID(event.company_id)
-        .then(company => ({ event, company }));
 
     api
       .getEvent(eventID)
       .then(handleEvent)
-      .then(handleEventAndCompany);
+      .then(handleCompany);
   }
 }
