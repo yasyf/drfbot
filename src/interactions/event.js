@@ -46,7 +46,7 @@ export default class EventInteraction extends BaseInteraction {
         }
         let respondTo = { channel: imMeta.channel.id, user: userID };
         bot.startConversation(respondTo, (err, convo) => {
-          convo.say(`Hey <@${message.user}>!`);
+          convo.say(`Hey <@${userID}>!`);
           convo.ask(
             {
               text: `Do you have a meeting coming up with ${company.name}?`,
