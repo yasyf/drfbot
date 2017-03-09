@@ -14,10 +14,12 @@ export default class EventInteraction extends BaseInteraction {
   hook(bot: SlackBot, message: Message) {
     const userID = message.match[1];
     const eventID = message.match[2];
+    var respondTo, timeout;
 
-    const notesCallback = (response, convo) => {
+    const notesCallback = (convo) => {
       convo.say('Thanks for that!');
-      api.addEventNotes(eventID, response.text).then(response => {
+      let response = convo.extractResponse('notes');
+      api.addEventNotes(eventID, response).then(response => {
         convo.say(`I've started a Google Doc for you <${response.link}|here>`);
         convo.say('Have an awesome day!');
         convo.next();
@@ -25,18 +27,20 @@ export default class EventInteraction extends BaseInteraction {
     };
 
     const yesCallback = (response, convo) => {
-      convo.say('Awesome! If you get a sec, respond here with a few notes after the meeting');
       convo.ask(
-        "Make sure you send the notes as one message so I don't get confused :D",
-        notesCallback,
-        { multiple: true },
-      )
+        'Awesome! If you have a sec, send me a few notes about how the meeting went',
+        (response, convo) => {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => { notesCallback(convo); }, 1000 * 60 * 0.5);
+        },
+        { multiple: true, key: 'notes' },
+      );
       convo.next();
     };
 
     const noCallback = (response, convo) => {
       convo.say('My bad, sorry about that!');
-      convo.next();
+      api.invalidateEvent(eventID).then(() => convo.next());
     };
 
     const handleCompany = company => {
@@ -44,12 +48,12 @@ export default class EventInteraction extends BaseInteraction {
         if (err) {
           return;
         }
-        let respondTo = { channel: imMeta.channel.id, user: userID };
+        respondTo = { channel: imMeta.channel.id, user: userID };
         bot.startConversation(respondTo, (err, convo) => {
           convo.say(`Hey <@${userID}>!`);
           convo.ask(
             {
-              text: `Do you have a meeting coming up with ${company.name}?`,
+              text: `Do you just have a meeting with ${company.name}?`,
               attachments: EventInteraction.companyAttachment(
                 company,
                 message,

@@ -72,6 +72,10 @@ export class API {
     return this.put(`events/${eventID}`, { notes });
   }
 
+  invalidateEvent(eventID: string): Promise<void> {
+    return this.post(`events/${eventID}/invalidate`);
+  }
+
   allocateCompany(companyID: number, userID: string): Promise<void> {
     return this.post(`companies/${companyID}/allocate`, {
       user_slack_id: userID,
