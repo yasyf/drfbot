@@ -53,7 +53,7 @@ export default class EventInteraction extends BaseInteraction {
           convo.say(`Hey <@${userID}>!`);
           convo.ask(
             {
-              text: `Do you just have a meeting with ${company.name}?`,
+              text: `Did you just have a meeting with ${company.name}?`,
               attachments: EventInteraction.companyAttachment(
                 company,
                 message,
