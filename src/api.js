@@ -21,7 +21,7 @@ export class API {
   }
 
   static url(path: string): string {
-    return `http://${this.domain}/${path}`;
+    return `https://${this.domain}/${path}`;
   }
 
   static path(method: string): string {
