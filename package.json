@@ -41,7 +41,7 @@
     "botkit": "0.5.1",
     "botkit-storage-redis": "1.1.0",
     "immutable": "3.8.1",
-    "moment": "2.15.1",
+    "moment": "2.19.3",
     "node-wit": "4.2.0",
     "redis": "2.6.5",
     "request": "2.79.0",
