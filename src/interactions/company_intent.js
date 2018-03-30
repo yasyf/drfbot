@@ -5,6 +5,7 @@ import type { Company, Message, Response, SlackBot } from '../types';
 import BaseInteraction from './base';
 
 import api from '../api';
+import dictionary from '../dictionary';
 
 export default class CompanyIntentInteraction extends BaseInteraction {
   abstract = true;
@@ -18,7 +19,7 @@ export default class CompanyIntentInteraction extends BaseInteraction {
   }
 
   hook(bot: SlackBot, message: Message) {
-    const handleCompanies = (companies) => {
+    const handleCompanies = companies => {
       if (!companies.size) {
         return;
       }
@@ -34,6 +35,8 @@ export default class CompanyIntentInteraction extends BaseInteraction {
           }
         });
     };
-    api.searchCompanies(message.entities.company).then(handleCompanies);
+    (message.all_entities.company || []).filter(name => !dictionary.contains(name)).forEach(name => {
+      api.searchCompanies(name).then(handleCompanies);
+    });
   }
 }

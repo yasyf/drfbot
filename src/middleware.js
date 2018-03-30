@@ -17,6 +17,7 @@ const Middleware = {
   receive(bot: SlackBot, message: Message, next: () => void) {
     message.intent = 'none';
     message.entities = { intent: 'none' };
+    message.all_entities = { };
     if (!message.text || message.text.length > MAX_MESSAGE_LENGTH) {
       next();
       return;
@@ -27,6 +28,7 @@ const Middleware = {
       }
       Object.keys(data.entities).forEach((name) => {
         const ents: Array<Entity> = data.entities[name];
+        message.all_entities[name] = ents.map(ent => ent.value);
         for (const ent of ents) {
           if (ent.confidence > MIN_CONFIDENCE) {
             message.entities[name] = ent.value;

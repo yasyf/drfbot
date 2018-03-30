@@ -13,10 +13,13 @@ export default class SnapshotQuestionInteraction
 
   responseFromCompany(company: Company, message: Message): ?Response {
     const snapshotLink = company.snapshot_link;
-    if (!snapshotLink) {
-      return null;
+
+    let response;
+    if (snapshotLink) {
+      response = `<${snapshotLink}|${company.name} Snapshot>`;
+    } else {
+      response = `I can't find the snapshot. Try asking ${company.partners.map(partner => `<@${partner.slack_id}>`).join(', ')}!`;
     }
-    const response = `<${snapshotLink}|${company.name} Snapshot>`;
     return {
       text: `<@${message.user}>`,
       attachments: SnapshotQuestionInteraction.textAttachment(response),
