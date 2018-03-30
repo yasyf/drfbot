@@ -102,16 +102,25 @@ export class API {
     return this.get(`companies/${companyID}/voting_status`);
   }
 
+  getCompaniesPage(companies: Array<Company>, page: number) : Promise<Array<Company>> {
+    return this.get('companies', {page}).then(result => {
+      if (result.companies.length) {
+        const newCompanies = companies.concat(result.companies);
+        return this.getCompaniesPage(newCompanies, page + 1);
+      } else {
+        return companies;
+      }
+    });
+  }
+
   getCompanies(): Promise<Immutable.List<Company>> {
-    return this.cache.getOrGenerate(COMPANIES_KEY, () =>
-      this.get('companies').then(result => result.companies)
-    ).then(Immutable.List);
+    return this.cache.getOrGenerate(COMPANIES_KEY, () => this.getCompaniesPage([], 0).then(Immutable.List));
   }
 
   getCompanyPatterns(): Promise<Immutable.List<Pattern>> {
-    return this.getCompanies().then(companies =>
-      companies.map(company => company.name)
-    );
+    return this.getCompanies().then(companies => {
+      return companies.map(company => company.name);
+    });
   }
 
   getCompany(name: string): Promise<Company> {
