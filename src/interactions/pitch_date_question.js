@@ -17,7 +17,17 @@ export default class PitchDateQuestionInteraction
     if (!company.pitch_on) {
       return `<@${message.user}>: I don't see a scheduled pitch for ${company.name}.`;
     }
-    const when = moment.unix(company.pitch_on).format("[on] dddd MMM Do [at] h:mm A");
-    return `<@${message.user}>: ${company.name} is coming in ${when} (${company.team})!`;
+    const when = moment.unix(company.pitch_on);
+    if (moment().diff(when) > 0) {
+      return `<@${message.user}>: ${company.name} pitched ${company.team} ${when.fromNow()}.`;
+    } else {
+      return `<@${message.user}>: ${company.name} is coming in to ${company.team} ${when.calendar(null, {
+        sameDay: '[today]',
+        nextDay: '[tomorrow]',
+        lastDay: '[yesterday]',
+        lastWeek: '[last] dddd',
+        sameElse: "[on] dddd MMM Do [at] h:mm A",
+      })}!`;
+    }
   }
 }
