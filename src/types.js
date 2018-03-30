@@ -102,6 +102,7 @@ export type Company = {
   snapshot_link: ?string,
   rdv_funded: boolean,
   capital_raised: string,
+  team: string,
   stats: {
     yes_votes: number,
     no_votes: number,

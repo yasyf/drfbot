@@ -45,6 +45,7 @@
     "node-wit": "4.2.0",
     "redis": "2.6.5",
     "request": "2.79.0",
-    "systemjs": "0.20.9"
+    "systemjs": "0.20.9",
+    "lodash": "4.17.5",
   }
 }

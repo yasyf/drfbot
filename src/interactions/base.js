@@ -13,6 +13,7 @@ import type {
 
 import { API } from '../api';
 import fs from 'fs';
+import _ from 'lodash';
 
 export default class BaseInteraction {
   helpText: ?string;
@@ -88,7 +89,7 @@ export default class BaseInteraction {
 
     let competitors;
     if (company.competitors.length) {
-      competitors = company.competitors.map(competitor => competitor.acronym).join(', ');
+      competitors = _.sampleSize(company.competitors, 3).map(competitor => competitor.name).join(', ');
     } else {
       competitors = '✗';
     }
@@ -96,7 +97,7 @@ export default class BaseInteraction {
     fields.push(...[
       { title: 'Status', value: status, short: true },
       { title: 'Partners', value: partners, short: true },
-      { title: 'Competitors', value: competitors, short: true },
+      { title: 'Investors', value: competitors, short: true },
       { title: 'Raised', value: company.capital_raised, short: true },
     ]);
 

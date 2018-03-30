@@ -17,8 +17,9 @@ export default class CompanyMentionInteraction extends BaseInteraction {
   patterns = api.getCompanyPatterns();
   messageTypes = ['ambient'];
 
-  processCompany(name) {
-    if (name.length < MIN_NAME_LENGTH || dictionary.contains(name)) {
+  hook(bot: SlackBot, message: Message) {
+    (message.all_entities.company || []).forEach(name => {
+      if (name.length < MIN_NAME_LENGTH || dictionary.contains(name)) {
       return;
     }
 
@@ -45,9 +46,6 @@ export default class CompanyMentionInteraction extends BaseInteraction {
       .getCompany(message.entities.company)
       .then(handleCompany)
       .then(handleCompanyAndMention);
-  }
-
-  hook(bot: SlackBot, message: Message) {
-    (message.all_entities.company || []).forEach(this.processCompany);
+    });
   }
 }
