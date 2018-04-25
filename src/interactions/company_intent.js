@@ -35,7 +35,7 @@ export default class CompanyIntentInteraction extends BaseInteraction {
           }
         });
     };
-    (message.all_entities.company || []).filter(name => !dictionary.contains(name)).forEach(name => {
+    (message.all_entities.company || []).filter(name => name.length >= 3 && !dictionary.contains(name)).forEach(name => {
       api.searchCompanies(name).then(handleCompanies);
     });
   }
